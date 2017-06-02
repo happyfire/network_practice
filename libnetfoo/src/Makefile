@@ -17,7 +17,7 @@ CFLAGS=-g -Wall
 
 $(MYLIB): $(MYLIB)(error.o)
 
-error.o: error.c $(MYINC)
+error.o: $(MYINC)
 
 clean:
 	-rm *.o $(MYLIB)
