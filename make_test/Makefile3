@@ -34,7 +34,7 @@ clean:
 
 install: myapp
 	@if [ -d $(INSTDIR) ]; \
-		then \
+	then \
 		cp myapp $(INSTDIR);\
 		chmod a+x $(INSTDIR)/myapp;\
 		chmod og-w $(INSTDIR)/myapp;\
