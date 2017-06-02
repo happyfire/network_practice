@@ -15,7 +15,7 @@ CFLAGS=-g -Wall
 
 
 
-$(MYLIB): $(MYLIB)(error.o)
+$(MYLIB): $(MYLIB)(error.o) $(MYLIB)(writen.o)
 
 error.o: $(MYINC)
 
