@@ -28,6 +28,9 @@
 
 #endif /* __netfoo_h */
 
+ssize_t	 readline(int, void *, size_t);
+ssize_t	 Readline(int, void *, size_t);
+
 ssize_t	writen(int fd, const void *vptr, size_t n);
 void	 Writen(int, void *, size_t);
 
