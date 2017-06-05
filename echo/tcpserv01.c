@@ -1,6 +1,7 @@
 #include "netfoo.h"
 
 void str_echo(int sockfd);
+void sig_chld(int signo);
 
 int main(int agrc, char **argv)
 {
@@ -18,10 +19,17 @@ int main(int agrc, char **argv)
     
     Bind(listenfd, (struct sockaddr*)&servaddr, sizeof(servaddr));
     Listen(listenfd, LISTENQ);
+
+    signal(SIGCHLD, sig_chld);
     
     for(;;){
         clilen = sizeof(cliaddr);
-        connfd = Accept(listenfd, (struct sockaddr*)&cliaddr, &clilen);
+        if( (connfd = accept(listenfd, (struct sockaddr*)&cliaddr, &clilen))<0){
+            if(errno == EINTR)
+                continue; //back to fo
+            else
+                err_sys("accept error");
+        }
 
         char cliaddr_p[INET_ADDRSTRLEN];
         inet_ntop(AF_INET, &cliaddr.sin_addr, cliaddr_p, sizeof(cliaddr_p));
@@ -55,3 +63,13 @@ again:
         err_sys("str_echo: read error");
 }
 
+void sig_chld(int signo)
+{
+    pid_t pid;
+    int stat;
+
+    while( (pid=waitpid(-1, &stat, WNOHANG)) >0){
+        printf("child %d terminated\n",pid);
+    }
+    return;
+}
