@@ -48,3 +48,9 @@ void	 err_msg(const char *, ...);
 void	 err_quit(const char *, ...);
 void	 err_ret(const char *, ...);
 void	 err_sys(const char *, ...);
+
+char * Fgets(char *ptr, int n, FILE *stream);
+void Fputs(const char *ptr, FILE *stream);
+void Fclose(FILE *fp);
+FILE * Fdopen(int fd, const char *type);
+FILE * Fopen(const char *filename, const char *mode);

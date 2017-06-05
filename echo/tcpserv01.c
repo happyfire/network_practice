@@ -23,16 +23,17 @@ int main(int agrc, char **argv)
         clilen = sizeof(cliaddr);
         connfd = Accept(listenfd, (struct sockaddr*)&cliaddr, &clilen);
 
+        char cliaddr_p[INET_ADDRSTRLEN];
+        inet_ntop(AF_INET, &cliaddr.sin_addr, cliaddr_p, sizeof(cliaddr_p));
+        printf("client %s:%d connected\n",cliaddr_p,ntohs(cliaddr.sin_port));
+
         if( (childpid=fork())==0){
             //child process
             close(listenfd);  //close listening socket
             str_echo(connfd); //process the request
+            printf("client %s:%d closed\n",cliaddr_p,ntohs(cliaddr.sin_port));
             exit(0);
         }
-
-        // char cliaddr_p[INET_ADDRSTRLEN];
-        // inet_ntop(AF_INET, &cliaddr.sin_addr, cliaddr_p, sizeof(cliaddr_p));
-        // printf("client %s connected",cliaddr_p);
 
         close(connfd); //parent closes connected socket
     }

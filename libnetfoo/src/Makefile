@@ -15,7 +15,7 @@ CFLAGS=-g -Wall
 
 
 
-$(MYLIB): $(MYLIB)(error.o) $(MYLIB)(wrapwr.o) $(MYLIB)(wrapsock.o)
+$(MYLIB): $(MYLIB)(error.o) $(MYLIB)(wrapwr.o) $(MYLIB)(wrapsock.o) $(MYLIB)(wrapstdio.o)
 
 error.o: $(MYINC)
 
