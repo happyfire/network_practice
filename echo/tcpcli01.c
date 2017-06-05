@@ -10,14 +10,14 @@ int main(int argc, char **argv)
     if(argc!=2)
         err_quit("usage: tcpcli <IPaddress>");
     
-    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    sockfd = Socket(AF_INET, SOCK_STREAM, 0);
     
     bzero(&servaddr, sizeof(servaddr));
     servaddr.sin_family = AF_INET;
     servaddr.sin_port = htons(SERV_PORT);
     inet_pton(AF_INET, argv[1], &servaddr.sin_addr);
     
-    connect(sockfd, (struct sockaddr*)&servaddr, sizeof(servaddr));
+    Connect(sockfd, (struct sockaddr*)&servaddr, sizeof(servaddr));
     
     str_cli(stdin, sockfd);
     exit(0);

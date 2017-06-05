@@ -9,25 +9,31 @@ int main(int agrc, char **argv)
     socklen_t clilen;
     struct sockaddr_in cliaddr, servaddr;
     
-    listenfd = socket(AF_INET, SOCK_STREAM, 0);
+    listenfd = Socket(AF_INET, SOCK_STREAM, 0);
     
     bzero(&servaddr, sizeof(servaddr));
     servaddr.sin_family = AF_INET;
     servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
     servaddr.sin_port = htons(SERV_PORT);
     
-    bind(listenfd, (struct sockaddr*)&servaddr, sizeof(servaddr));
-    listen(listenfd, LISTENQ);
+    Bind(listenfd, (struct sockaddr*)&servaddr, sizeof(servaddr));
+    Listen(listenfd, LISTENQ);
     
     for(;;){
         clilen = sizeof(cliaddr);
-        connfd = accept(listenfd, (struct sockaddr*)&cliaddr, &clilen);
+        connfd = Accept(listenfd, (struct sockaddr*)&cliaddr, &clilen);
+
         if( (childpid=fork())==0){
             //child process
             close(listenfd);  //close listening socket
             str_echo(connfd); //process the request
             exit(0);
         }
+
+        // char cliaddr_p[INET_ADDRSTRLEN];
+        // inet_ntop(AF_INET, &cliaddr.sin_addr, cliaddr_p, sizeof(cliaddr_p));
+        // printf("client %s connected",cliaddr_p);
+
         close(connfd); //parent closes connected socket
     }
 }
