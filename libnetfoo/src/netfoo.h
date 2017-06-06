@@ -54,3 +54,10 @@ void Fputs(const char *ptr, FILE *stream);
 void Fclose(FILE *fp);
 FILE * Fdopen(int fd, const char *type);
 FILE * Fopen(const char *filename, const char *mode);
+
+int Select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds,
+       struct timeval *timeout);
+
+#define	min(a,b)	((a) < (b) ? (a) : (b))
+#define	max(a,b)	((a) > (b) ? (a) : (b))
+
