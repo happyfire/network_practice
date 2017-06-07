@@ -11,6 +11,10 @@
 #include 	<stdlib.h>
 #include 	<string.h>
 #include	<unistd.h> //fork
+#include	<fcntl.h>		/* for nonblocking */
+#include	<sys/stat.h>	/* for S_xxx file mode constants */
+#include	<sys/time.h>	/* includes <time.h> unsafely */
+# include	<sys/ioctl.h>
 
 /* Following could be derived from SOMAXCONN in <sys/socket.h>, but many
    kernels still #define it as 5, while actually supporting many more */
@@ -49,6 +53,35 @@ void	 err_quit(const char *, ...);
 void	 err_ret(const char *, ...);
 void	 err_sys(const char *, ...);
 
+/* prototypes for our Unix wrapper functions: see {Sec errors} */
+void	*Calloc(size_t, size_t);
+void	 Close(int);
+void	 Dup2(int, int);
+int		 Fcntl(int, int, int);
+void	 Gettimeofday(struct timeval *, void *);
+int		 Ioctl(int, int, void *);
+pid_t	 Fork(void);
+void	*Malloc(size_t);
+int	 Mkstemp(char *);
+void	*Mmap(void *, size_t, int, int, int, off_t);
+int		 Open(const char *, int, mode_t);
+void	 Pipe(int *fds);
+ssize_t	 Read(int, void *, size_t);
+void	 Sigaddset(sigset_t *, int);
+void	 Sigdelset(sigset_t *, int);
+void	 Sigemptyset(sigset_t *);
+void	 Sigfillset(sigset_t *);
+int		 Sigismember(const sigset_t *, int);
+void	 Sigpending(sigset_t *);
+void	 Sigprocmask(int, const sigset_t *, sigset_t *);
+char	*Strdup(const char *);
+long	 Sysconf(int);
+void	 Sysctl(int *, u_int, void *, size_t *, void *, size_t);
+void	 Unlink(const char *);
+pid_t	 Wait(int *);
+pid_t	 Waitpid(pid_t, int *, int);
+void	 Write(int, void *, size_t);
+
 char * Fgets(char *ptr, int n, FILE *stream);
 void Fputs(const char *ptr, FILE *stream);
 void Fclose(FILE *fp);
@@ -57,6 +90,11 @@ FILE * Fopen(const char *filename, const char *mode);
 
 int Select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds,
        struct timeval *timeout);
+
+#define	FILE_MODE	(S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)
+					/* default file access permissions for new files */
+#define	DIR_MODE	(FILE_MODE | S_IXUSR | S_IXGRP | S_IXOTH)
+					/* default permissions for new directories */
 
 #define	min(a,b)	((a) < (b) ? (a) : (b))
 #define	max(a,b)	((a) > (b) ? (a) : (b))
