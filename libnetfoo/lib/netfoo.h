@@ -14,7 +14,11 @@
 #include	<fcntl.h>		/* for nonblocking */
 #include	<sys/stat.h>	/* for S_xxx file mode constants */
 #include	<sys/time.h>	/* includes <time.h> unsafely */
-# include	<sys/ioctl.h>
+#include	<sys/ioctl.h>
+#include	<sys/select.h>
+#include	<poll.h>
+#include	<sys/event.h>	/* for kqueue */
+#include	<pthread.h>
 
 /* Following could be derived from SOMAXCONN in <sys/socket.h>, but many
    kernels still #define it as 5, while actually supporting many more */
@@ -30,7 +34,19 @@
 #define	UNIXSTR_PATH	"/tmp/unix.str"	/* Unix domain stream */
 #define	UNIXDG_PATH		"/tmp/unix.dg"	/* Unix domain datagram */
 
-#endif /* __netfoo_h */
+/* POSIX requires that an #include of <poll.h> DefinE INFTIM, but many
+   systems still DefinE it in <sys/stropts.h>.  We don't want to include
+   all the STREAMS stuff if it's not needed, so we just DefinE INFTIM here.
+   This is the standard value, but there's no guarantee it is -1. */
+#ifndef INFTIM
+#define INFTIM          (-1)    /* infinite poll timeout */
+/* $$.Ic INFTIM$$ */
+#ifdef	HAVE_POLL_H
+#define	INFTIM_UNPH				/* tell unpxti.h we defined it */
+#endif
+#endif
+
+
 
 int Socket(int family, int type, int protocol);
 void Bind(int fd, const struct sockaddr *sa, socklen_t salen);
@@ -90,6 +106,7 @@ FILE * Fopen(const char *filename, const char *mode);
 
 int Select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds,
        struct timeval *timeout);
+int Poll(struct pollfd *fdarray, unsigned long nfds, int timeout);
 
 #define	FILE_MODE	(S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)
 					/* default file access permissions for new files */
@@ -99,3 +116,4 @@ int Select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds,
 #define	min(a,b)	((a) < (b) ? (a) : (b))
 #define	max(a,b)	((a) > (b) ? (a) : (b))
 
+#endif /* __netfoo_h */

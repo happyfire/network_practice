@@ -5,7 +5,7 @@ CFLAGS += -I../libnetfoo/lib
 LDFLAGS += -L../libnetfoo/lib
 LDFLAGS += -lnetfoo
 
-all: server server2 client sumserver sumclient client_select client_select2 server_select
+all: server server2 client sumserver sumclient client_select client_select2 server_select server_poll
 
 server: tcpserv01.o
 	$(CC) $(LDFLAGS) -o server tcpserv01.o
@@ -30,6 +30,9 @@ client_select2: tcpcli_select02.o
 
 server_select: tcpserv_select.o
 	$(CC) $(LDFLAGS) -o server_select tcpserv_select.o
+
+server_poll: tcpserv_poll.o
+	$(CC) $(LDFLAGS) -o server_poll tcpserv_poll.o
 
 clean:
 	-rm *.o server server2 client sumserver sumclient
