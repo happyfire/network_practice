@@ -54,6 +54,16 @@ void Listen(int fd, int backlog);
 int Accept(int fd, struct sockaddr *sa, socklen_t *salenptr);
 void Connect(int fd, const struct sockaddr *sa, socklen_t salen);
 
+ssize_t Recv(int fd, void *ptr, size_t nbytes, int flags);
+ssize_t Recvfrom(int fd, void *ptr, size_t nbytes, int flags,
+		 struct sockaddr *sa, socklen_t *salenptr);
+void Send(int fd, const void *ptr, size_t nbytes, int flags);
+void Sendto(int fd, const void *ptr, size_t nbytes, int flags,
+	   const struct sockaddr *sa, socklen_t salen);
+
+const char* Inet_ntop(int family, const void *addrptr, char *strptr, size_t len);
+void Inet_pton(int family, const char *strptr, void *addrptr);
+
 ssize_t readn(int, void*, size_t);
 ssize_t Readn(int fd, void *ptr, size_t nbytes);
 
@@ -107,6 +117,7 @@ FILE * Fopen(const char *filename, const char *mode);
 int Select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds,
        struct timeval *timeout);
 int Poll(struct pollfd *fdarray, unsigned long nfds, int timeout);
+void Shutdown(int fd, int how);
 
 #define	FILE_MODE	(S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)
 					/* default file access permissions for new files */
