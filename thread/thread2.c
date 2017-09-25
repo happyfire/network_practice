@@ -1,3 +1,6 @@
+//本示例演示了用低效的轮询方法同步两个线程的执行。
+//通过对一个全局变量run_now的值的控制，两个线程轮流执行。
+
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -37,7 +40,7 @@ int main()
 		exit(EXIT_FAILURE);
 	}
 
-	printf("Thread joined\n");
+	printf("Thread joined, result is %s\n", (char*)thread_result);
 	exit(EXIT_SUCCESS);
 }
 
