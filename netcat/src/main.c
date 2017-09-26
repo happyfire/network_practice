@@ -5,7 +5,6 @@
 #include "netcat.h"
 #include "utils.h"
 
-
 static const char *short_options = "s:p:l";
 static const struct option long_options[] = {
         {"host", required_argument, NULL, 's'},
@@ -40,6 +39,7 @@ int main(int argc, char *argv[])
 
     if(port <= 0){
         LOGE("port is wrong: %d",port);
+        exit(-1);
     }
 
     int fd = create_tcp_socket();
@@ -49,13 +49,13 @@ int main(int argc, char *argv[])
         int connfd = tcp_accept(fd);
         LOG("connfd=%d",connfd);
 
-        //TODO: run thread
-        close(connfd);
+        close(fd);
+        run(connfd);
     }
     else{
         LOG("client running.");
         tcp_connect(fd, host, port);
-
+        run(fd);
     }
 
     return 0;

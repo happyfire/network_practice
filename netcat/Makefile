@@ -1,6 +1,7 @@
 CC = gcc
 
-CFLAGS :=-g -rdynamic -Wall -Werror -std=gnu99
+CFLAGS :=-g -rdynamic -Wall -Werror -std=gnu99 -D_REENTRANT
+LDFLAGS :=-lpthread
 
 SOURCES = src/netcat.c src/utils.c
 OBJECTS = $(SOURCES:.c=.o)

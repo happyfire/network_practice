@@ -15,4 +15,6 @@ int tcp_accept(int listenfd);
 
 void tcp_connect(int fd, const char *host, int port);
 
+void run(int tcpfd);
+
 #endif //_NETCAT_H

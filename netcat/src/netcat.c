@@ -9,6 +9,7 @@
 #include <arpa/inet.h>
 #include <string.h>
 #include "utils.h"
+#include <pthread.h>
 
 int writen_n(int fd, const void *buf, int length)
 {
@@ -28,6 +29,52 @@ int writen_n(int fd, const void *buf, int length)
     }
 
     return written;
+}
+
+void *thread_function(void *arg)
+{
+    int tcpfd = *(int*)arg;
+    char buf[8192];
+    int nr = 0;
+    while( (nr = read(tcpfd, buf, sizeof(buf))) > 0){
+        int nw = writen_n(STDOUT_FILENO, buf, nr);
+        if(nw < nr){
+            break;
+        }
+    }
+    exit(0);
+}
+
+void run(int tcpfd){
+    pthread_t a_thread;
+
+    int res = pthread_create(&a_thread, NULL, thread_function, (void*)&tcpfd);
+    if(res != 0){
+        perror("thread creation failed");
+        exit(-1);
+    }
+
+    char buf[8192];
+    int nr = 0;
+    while( (nr = read(STDIN_FILENO, buf, sizeof(buf))) > 0){
+        int nw = writen_n(tcpfd, buf, nr);
+        if(nw < nr){
+            break;
+        }
+    }
+
+    //shutdown write
+    if(shutdown(tcpfd, SHUT_WR) < 0){
+        perror("socket shutdown write");
+    }
+
+    //join thread
+    res = pthread_join(a_thread, NULL);
+    if(res != 0){
+        perror("thread join failed");
+        exit(-1);
+    }
+
 }
 
 int create_tcp_socket()
