@@ -1,3 +1,10 @@
+//本示例演示了线程的取消。
+//发起取消的一方使用 pthread_cancel() 去取消一个线程。但线程是否能取消，怎么取消则是由被取消线程自己决定。
+//被取消线程使用 pthread_setcancelstate()去设置自己是否能被取消，默认为PTHREAD_CANCEL_ENABLE。
+//使用 pthread_setcanceltype()设置取消类型，默认为PTHREAD_CANCEL_DEFERRED	。DEFERRED类型会推迟取消动作直到线程运行到一个取消点，
+//取消点通常是一个阻塞操作，比如pthread_join, pthread_cond_wait, pthread_cond_timewait, pthread_testcancel, sem_wait, sigwait。
+//void pthread_testcancel(void)
+//检查本线程是否处于Canceld状态，如果是，则进行取消动作，否则直接返回。
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>

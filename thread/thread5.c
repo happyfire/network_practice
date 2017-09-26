@@ -1,3 +1,12 @@
+//
+//本示例演示了线程属性的使用，并使用了detach state属性，设置子线程为detached，这样子线程和主线程脱落，子线程自行结束，主线程不需要等待子线程join。
+//线程属性的类型为 pthread_attr_t
+//使用 pthread_attr_init 初始化， 使用 pthread_attr_destroy 释放。
+//使用 pthread_attr_setdetachstate 设置detach状态
+//
+//注意：如果不设置detached属性，程序运行起来看上去没什么区别。实际是一个线程如果是joinable的（默认），则必须调用pthread_join去回收他的资源，包含线程描述符和栈，否则资源无法释放；而线程如果设置为detached的，则不需要调用pthread_join，该线程结束后资源会被系统回收。
+//当然，当进程结束时，所有的线程资源都会被回收。
+
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>

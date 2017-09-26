@@ -2,3 +2,8 @@ gcc -D_REENTRANT thread1.c -o thread1 -lpthread
 gcc -D_REENTRANT thread2.c -o thread2 -lpthread
 gcc -D_REENTRANT thread3.c -o thread3 -lpthread
 gcc -D_REENTRANT thread4.c -o thread4 -lpthread
+gcc -D_REENTRANT thread5.c -o thread5 -lpthread
+gcc -D_REENTRANT thread6.c -o thread6 -lpthread
+gcc -D_REENTRANT thread7.c -o thread7 -lpthread
+gcc -D_REENTRANT thread8.c -o thread8 -lpthread
+gcc -D_REENTRANT thread8a.c -o thread8a -lpthread

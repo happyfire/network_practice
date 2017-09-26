@@ -1,3 +1,5 @@
+//本示例演示了设置线程的调度策略和优先级
+
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -53,6 +55,7 @@ int main()
 		printf("Waiting for thread to say it's finished...\n");
 		sleep(1);
 	}
+
 	printf("Other thread finished, bye!\n");
 	exit(EXIT_SUCCESS);
 }
